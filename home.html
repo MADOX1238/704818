@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الرئيسية - Spherely</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    .error-message {
+      display: none;
+      color: red;
+      font-size: 20px;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .post-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .post-container h2 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .post-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+    }
+    .post-container button {
+      padding: 10px 20px;
+      background-color: #0078d4;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .post-container button:hover {
+      background-color: #005a9e;
+    }
+    .posts {
+      margin-top: 30px;
+    }
+    .post {
+      background-color: #f7f7f7;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    .post .username {
+      font-weight: bold;
+      animation: colorChange 3s infinite;
+    }
+    @keyframes colorChange {
+      0% { color: red; }
+      33% { color: blue; }
+      66% { color: green; }
+      100% { color: red; }
+    }
+  </style>
+</head>
+<body>
+  <div class="error-message" id="error-message">
+    لم تقم بتسجيل الدخول! سيتم توجيهك إلى صفحة تسجيل الدخول الآن...
+  </div>
+  <div class="post-container" id="post-container">
+    <h2>مرحبًا بك! قم بكتابة منشور</h2>
+    <textarea id="post-input" rows="4" placeholder="اكتب منشورك هنا..."></textarea>
+    <button onclick="submitPost()">نشر</button>
+    <div class="posts" id="posts"></div>
+  </div>
+
+  <script>
+    // التحقق من تسجيل الدخول
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    const errorMessage = document.getElementById('error-message');
+    const postContainer = document.getElementById('post-container');
+
+    if (!isLoggedIn) {
+      // إظهار رسالة الخطأ وإعادة التوجيه
+      errorMessage.style.display = 'block';
+      postContainer.style.display = 'none';
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 3000);
+    }
+
+    // بيانات المنشورات
+    const postsContainer = document.getElementById('posts');
+    const username = localStorage.getItem('username');
+
+    function submitPost() {
+      const postInput = document.getElementById('post-input');
+      const postContent = postInput.value.trim();
+
+      if (postContent) {
+        // إنشاء عنصر منشور جديد
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
+        postElement.innerHTML = `<span class="username">${username}</span>: ${postContent}`;
+        postsContainer.prepend(postElement);
+
+        // مسح الحقل
+        postInput.value = '';
+      } else {
+        alert('يرجى كتابة محتوى المنشور.');
+      }
+    }
+  </script>
+
+</body></html>
